@@ -17,7 +17,6 @@
     />
 
     <style>
-      /* Estilos personalizados y paleta de colores (igual que la invitación) */
       body {
         font-family: "Lato", sans-serif;
         background-color: #fff0f5; /* Rosa lavanda muy claro (crema) */
@@ -28,12 +27,11 @@
         font-family: "Edu NSW ACT Hand Cursive", cursive;
       }
       .bg-cream-light {
-        background-color: #fff0f5; /* Rosa lavanda muy claro (crema) */
+        background-color: #fff0f5;
       }
       .text-accent {
-        color: #d87093; /* Rosa violeta pálido (acento) */
+        color: #d87093;
       }
-      /* Estilo para el resultado que aparece con una transición suave */
       #result-container {
         opacity: 0;
         transform: translateY(10px);
@@ -80,165 +78,173 @@
     </div>
 
     <script>
-      // --- BASE DE DATOS DE INVITADOS ---
-      // IMPORTANTE: Aquí es donde debes agregar a tus invitados.
-      // Escribe el nombre o grupo familiar en MINÚSCULAS entre las comillas.
-      // A la derecha, después de los dos puntos, pones el número de la mesa.
-      // No olvides la coma (,) al final de cada línea, excepto la última.
+      // --- BASE DE DATOS DE MESAS E INVITADOS ---
+      const tables = [
+        {
+          number: 1,
+          guests: [
+            "orlando rosal",
+            "alibel parra",
+            "alejandra parra",
+            "willder gomez",
+            "alibel morillo",
+            "hernan parra",
+            "paola mendoza",
+            "hernan a parra",
+            "deyanira salas",
+          ],
+        },
+        {
+          number: 2,
+          guests: [
+            "matias munoz",
+            "valentina ugas",
+            "johana rojas",
+            "antonella ugas",
+            "julian ugas",
+            "salvador ugas",
+            "valeria ugas",
+            "alana santander",
+            "omar barrios",
+          ],
+        },
+        {
+          number: 3,
+          guests: [
+            "marcela sayago",
+            "jose sayago",
+            "maria sayago",
+            "jose sayago jr",
+            "ana sayago",
+            "jose sayago iii",
+            "luis sayago",
+            "rosa sayago",
+            "luis sayago jr",
+            "maria sayago jr",
+          ],
+        },
+        {
+          number: 4,
+          guests: [
+            "luis rodriguez",
+            "maria rodriguez",
+            "luis rodriguez jr",
+            "ana rodriguez",
+            "carlos rodriguez",
+            "laura rodriguez",
+            "carlos rodriguez jr",
+            "sofia rodriguez",
+            "miguel rodriguez",
+            "elena rodriguez",
+          ],
+        },
+        {
+          number: 5,
+          guests: [
+            "juan perez",
+            "maria perez",
+            "juan perez jr",
+            "ana perez",
+            "carlos perez",
+            "laura perez",
+            "carlos perez jr",
+            "sofia perez",
+            "miguel perez",
+            "elena perez",
+          ],
+        },
+        {
+          number: 6,
+          guests: [
+            "pedro gomez",
+            "maria gomez",
+            "pedro gomez jr",
+            "ana gomez",
+            "carlos gomez",
+            "laura gomez",
+            "carlos gomez jr",
+            "sofia gomez",
+            "miguel gomez",
+            "elena gomez",
+          ],
+        },
+        {
+          number: 7,
+          guests: [
+            "jose lopez",
+            "maria lopez",
+            "jose lopez jr",
+            "ana lopez",
+            "carlos lopez",
+            "laura lopez",
+            "carlos lopez jr",
+            "sofia lopez",
+            "miguel lopez",
+            "elena lopez",
+          ],
+        },
+        {
+          number: 8,
+          guests: [
+            "luis martinez",
+            "maria martinez",
+            "luis martinez jr",
+            "ana martinez",
+            "carlos martinez",
+            "laura martinez",
+            "carlos martinez jr",
+            "sofia martinez",
+            "miguel martinez",
+            "elena martinez",
+          ],
+        },
+        // Puedes seguir agregando mesas con el mismo formato
+      ];
 
-      const guestList = {
-        // --- INVITADOS CONFIRMADOS (EJEMPLOS) ---
-        //Mesa 1
-        "": 1,
-        "orlando rosal": 1,
-        "alibel parra": 1,
-        "alejandra parra": 1,
-        "willder gomez": 1,
-        "alibel morillo": 1,
-        "hernan parra": 1,
-        "paola mendoza": 1,
-        "hernan a parra": 1,
-        "deyanira salas": 1,
-
-        //Mesa 2
-        "matias munoz": 2,
-        "valentina ugas": 2,
-        "johana rojas": 2,
-        "antonella ugas": 2,
-        "julian ugas": 2,
-        "salvador ugas": 2,
-        "valeria ugas": 2,
-        "alana santander": 2,
-        "omar barrios": 2,
-        "": 2,
-
-        //Mesa 3
-        "marcela sayago": 3,
-        "jose sayago": 3,
-        "maria sayago": 3,
-        "jose sayago jr": 3,
-        "ana sayago": 3,
-        "jose sayago iii": 3,
-        "luis sayago": 3,
-        "rosa sayago": 3,
-        "luis sayago jr": 3,
-        "maria sayago jr": 3,
-
-        //Mesa 4
-        "luis rodriguez": 4,
-        "maria rodriguez": 4,
-        "luis rodriguez jr": 4,
-        "ana rodriguez": 4,
-        "carlos rodriguez": 4,
-        "laura rodriguez": 4,
-        "carlos rodriguez jr": 4,
-        "sofia rodriguez": 4,
-        "miguel rodriguez": 4,
-        "elena rodriguez": 4,
-
-        //Mesa 5
-        "juan perez": 5,
-        "maria perez": 5,
-        "juan perez jr": 5,
-        "ana perez": 5,
-        "carlos perez": 5,
-        "laura perez": 5,
-        "carlos perez jr": 5,
-        "sofia perez": 5,
-        "miguel perez": 5,
-        "elena perez": 5,
-
-        //Mesa 6
-        "pedro gomez": 6,
-        "maria gomez": 6,
-        "pedro gomez jr": 6,
-        "ana gomez": 6,
-        "carlos gomez": 6,
-        "laura gomez": 6,
-        "carlos gomez jr": 6,
-        "sofia gomez": 6,
-        "miguel gomez": 6,
-        "elena gomez": 6,
-
-        //Mesa 7
-        "jose lopez": 7,
-        "maria lopez": 7,
-        "jose lopez jr": 7,
-        "ana lopez": 7,
-        "carlos lopez": 7,
-        "laura lopez": 7,
-        "carlos lopez jr": 7,
-        "sofia lopez": 7,
-        "miguel lopez": 7,
-        "elena lopez": 7,
-
-        //Mesa 8
-        "luis martinez": 8,
-        "maria martinez": 8,
-        "luis martinez jr": 8,
-        "ana martinez": 8,
-        "carlos martinez": 8,
-        "laura martinez": 8,
-        "carlos martinez jr": 8,
-        "sofia martinez": 8,
-        "miguel martinez": 8,
-        "elena martinez": 8,
-
-        // --- ESPACIO PARA TUS PRÓXIMOS INVITADOS ---
-        // Simplemente sigue el formato: "nombre del invitado": numeroDeMesa,
-        // "invitado 7": 0,
-        // "invitado 8": 0,
-        // "invitado 9": 0,
-        // "invitado 10": 0,
-        // ... y así sucesivamente hasta llegar a los 80.
-        // El último invitado de la lista no debe llevar coma al final.
-      };
-
-      // --- LÓGICA DE LA APLICACIÓN (NO ES NECESARIO TOCAR ESTO) ---
+      // --- LÓGICA DE LA APLICACIÓN ---
       const nameInput = document.getElementById("guest-name");
       const searchButton = document.getElementById("search-button");
       const resultContainer = document.getElementById("result-container");
       const resultText = document.getElementById("result-text");
 
       const findTable = () => {
-        // 1. Obtiene el nombre y lo formatea (minúsculas, sin espacios extra)
         const guestName = nameInput.value.trim().toLowerCase();
 
         if (guestName === "") {
           resultText.textContent = "Por favor, ingresa un nombre.";
-          resultContainer.style.backgroundColor = "#fef3c7"; // Amarillo claro
-          resultText.style.color = "#92400e"; // Naranja oscuro
+          resultContainer.style.backgroundColor = "#fef3c7";
+          resultText.style.color = "#92400e";
           resultContainer.classList.add("visible");
           return;
         }
 
-        // 2. Busca el nombre en nuestra lista de invitados
-        if (guestList.hasOwnProperty(guestName)) {
-          const tableNumber = guestList[guestName];
+        let foundTable = null;
+
+        tables.forEach((table) => {
+          if (table.guests.includes(guestName)) {
+            foundTable = table.number;
+          }
+        });
+
+        if (foundTable) {
           const capitalizedName = nameInput.value
             .trim()
             .replace(/\b\w/g, (l) => l.toUpperCase());
 
-          // Muestra el resultado exitoso
-          resultText.innerHTML = `¡Hola ${capitalizedName}! <br> Tu mesa es la número: <span class="text-5xl block mt-2">${tableNumber}</span>`;
-          resultContainer.style.backgroundColor = "#d1fae5"; // Verde claro
-          resultText.style.color = "#065f46"; // Verde oscuro
+          resultText.innerHTML = `¡Hola ${capitalizedName}! <br> Tu mesa es la número: <span class="text-5xl block mt-2">${foundTable}</span>`;
+          resultContainer.style.backgroundColor = "#d1fae5";
+          resultText.style.color = "#065f46";
         } else {
-          // Muestra un mensaje de error si no se encuentra
           resultText.textContent =
             "Nombre no encontrado. Por favor, consulta con nuestro personal de apoyo.";
-          resultContainer.style.backgroundColor = "#fee2e2"; // Rojo claro
-          resultText.style.color = "#991b1b"; // Rojo oscuro
+          resultContainer.style.backgroundColor = "#fee2e2";
+          resultText.style.color = "#991b1b";
         }
 
-        // 3. Hace visible el contenedor del resultado
         resultContainer.classList.add("visible");
       };
 
-      // Asigna la función al botón
       searchButton.addEventListener("click", findTable);
-
-      // Permite buscar también presionando "Enter" en el teclado
       nameInput.addEventListener("keyup", (event) => {
         if (event.key === "Enter") {
           findTable();
