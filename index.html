@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bienvenida - Mis 15 Años Marcela Sayago</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive:wght@400..700&family=Lato:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Estilos personalizados y paleta de colores (igual que la invitación) */
+      body {
+        font-family: "Lato", sans-serif;
+        background-color: #fff0f5; /* Rosa lavanda muy claro (crema) */
+        color: #8b575c; /* Tono rosa oscuro para texto */
+      }
+      h1,
+      h2 {
+        font-family: "Edu NSW ACT Hand Cursive", cursive;
+      }
+      .bg-cream-light {
+        background-color: #fff0f5; /* Rosa lavanda muy claro (crema) */
+      }
+      .text-accent {
+        color: #d87093; /* Rosa violeta pálido (acento) */
+      }
+      /* Estilo para el resultado que aparece con una transición suave */
+      #result-container {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out,
+          max-height 0.5s ease-out;
+        max-height: 0;
+        overflow: hidden;
+      }
+      #result-container.visible {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 200px;
+      }
+    </style>
+  </head>
+  <body class="bg-cream-light flex items-center justify-center min-h-screen">
+    <div
+      class="w-full max-w-md mx-auto p-8 bg-white/70 rounded-2xl shadow-xl text-center"
+    >
+      <!-- Título -->
+      <h1 class="text-6xl font-bold text-accent">Bienvenidos</h1>
+      <p class="mt-2 text-lg text-gray-600">Encuentra tu mesa</p>
+
+      <!-- Formulario de Búsqueda -->
+      <div class="mt-8">
+        <input
+          type="text"
+          id="guest-name"
+          placeholder="Escribe tu nombre o el de tu familia"
+          class="w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-400 transition-colors"
+        />
+        <button
+          id="search-button"
+          class="w-full mt-4 px-4 py-3 bg-pink-500 text-white text-lg font-bold rounded-lg hover:bg-pink-600 transition-transform transform hover:scale-105"
+        >
+          Buscar Mesa
+        </button>
+      </div>
+
+      <!-- Área de Resultados -->
+      <div id="result-container" class="mt-6 p-4 rounded-lg">
+        <p id="result-text" class="text-2xl font-bold"></p>
+      </div>
+    </div>
+
+    <script>
+      // --- BASE DE DATOS DE INVITADOS ---
+      // IMPORTANTE: Aquí es donde debes agregar a tus invitados.
+      // Escribe el nombre o grupo familiar en MINÚSCULAS entre las comillas.
+      // A la derecha, después de los dos puntos, pones el número de la mesa.
+      // No olvides la coma (,) al final de cada línea, excepto la última.
+
+      const guestList = {
+        // --- INVITADOS CONFIRMADOS (EJEMPLOS) ---
+        //Mesa 1
+        "": 1,
+        "orlando rosal": 1,
+        "alibel parra": 1,
+        "alejandra parra": 1,
+        "willder gomez": 1,
+        "alibel morillo": 1,
+        "hernan parra": 1,
+        "paola mendoza": 1,
+        "hernan a parra": 1,
+        "deyanira salas": 1,
+
+        //Mesa 2
+        "jose sayago": 2,
+        "maria elena rosal": 2,
+        "jose sayago jr": 2,
+        "jose sayago iii": 2,
+        "jose sayago iv": 2,
+        "maria elena rosal jr": 2,
+        "maria elena rosal iii": 2,
+        "maria elena rosal iv": 2,
+        "maria elena rosal iv": 2,
+        "maria elena rosal iv": 2,
+
+        // --- ESPACIO PARA TUS PRÓXIMOS INVITADOS ---
+        // Simplemente sigue el formato: "nombre del invitado": numeroDeMesa,
+        // "invitado 7": 0,
+        // "invitado 8": 0,
+        // "invitado 9": 0,
+        // "invitado 10": 0,
+        // ... y así sucesivamente hasta llegar a los 80.
+        // El último invitado de la lista no debe llevar coma al final.
+      };
+
+      // --- LÓGICA DE LA APLICACIÓN (NO ES NECESARIO TOCAR ESTO) ---
+      const nameInput = document.getElementById("guest-name");
+      const searchButton = document.getElementById("search-button");
+      const resultContainer = document.getElementById("result-container");
+      const resultText = document.getElementById("result-text");
+
+      const findTable = () => {
+        // 1. Obtiene el nombre y lo formatea (minúsculas, sin espacios extra)
+        const guestName = nameInput.value.trim().toLowerCase();
+
+        if (guestName === "") {
+          resultText.textContent = "Por favor, ingresa un nombre.";
+          resultContainer.style.backgroundColor = "#fef3c7"; // Amarillo claro
+          resultText.style.color = "#92400e"; // Naranja oscuro
+          resultContainer.classList.add("visible");
+          return;
+        }
+
+        // 2. Busca el nombre en nuestra lista de invitados
+        if (guestList.hasOwnProperty(guestName)) {
+          const tableNumber = guestList[guestName];
+          const capitalizedName = nameInput.value
+            .trim()
+            .replace(/\b\w/g, (l) => l.toUpperCase());
+
+          // Muestra el resultado exitoso
+          resultText.innerHTML = `¡Hola ${capitalizedName}! <br> Tu mesa es la número: <span class="text-5xl block mt-2">${tableNumber}</span>`;
+          resultContainer.style.backgroundColor = "#d1fae5"; // Verde claro
+          resultText.style.color = "#065f46"; // Verde oscuro
+        } else {
+          // Muestra un mensaje de error si no se encuentra
+          resultText.textContent =
+            "Nombre no encontrado. Por favor, consulta con nuestro personal de apoyo.";
+          resultContainer.style.backgroundColor = "#fee2e2"; // Rojo claro
+          resultText.style.color = "#991b1b"; // Rojo oscuro
+        }
+
+        // 3. Hace visible el contenedor del resultado
+        resultContainer.classList.add("visible");
+      };
+
+      // Asigna la función al botón
+      searchButton.addEventListener("click", findTable);
+
+      // Permite buscar también presionando "Enter" en el teclado
+      nameInput.addEventListener("keyup", (event) => {
+        if (event.key === "Enter") {
+          findTable();
+        }
+      });
+    </script>
+  </body>
+</html>
