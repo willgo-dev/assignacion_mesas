@@ -83,14 +83,14 @@
         {
           number: 1,
           guests: [
-            "orlando rosal",
-            "alibel parra",
-            "alejandra parra",
+            { name: "alibel parra", family: "Parra" },
+            "Orlando Rosal",
+            { name: "alejandra parra", family: "Parra" },
             "willder gomez",
-            "alibel morillo",
-            "hernan parra",
+            { name: "alibel morillo", family: "Parra" },
+            { name: "hernan parra", family: "Parra" },
             "paola mendoza",
-            "hernan a parra",
+            { name: "hernan a parra", family: "Parra" },
             "deyanira salas",
           ],
         },
@@ -98,12 +98,12 @@
           number: 2,
           guests: [
             "matias munoz",
-            "valentina ugas",
+            { name: "valentina ugas", family: "Ugas" },
             "johana rojas",
-            "antonella ugas",
+            { name: "antonella ugas", family: "Ugas" },
             "julian ugas",
             "salvador ugas",
-            "valeria ugas",
+            { name: "valeria ugas", family: "Ugas" },
             "alana santander",
             "omar barrios",
           ],
@@ -111,13 +111,13 @@
         {
           number: 3,
           guests: [
-            "marcela sayago",
+            { name: "marcela sayago", family: "Sayago" },
             "jose sayago",
             "maria sayago",
-            "jose sayago jr",
+            { name: "jose sayago jr", family: "Sayago" },
             "ana sayago",
             "jose sayago iii",
-            "luis sayago",
+            { name: "luis sayago", family: "Sayago" },
             "rosa sayago",
             "luis sayago jr",
             "maria sayago jr",
@@ -127,7 +127,7 @@
           number: 4,
           guests: [
             "luis rodriguez",
-            "maria rodriguez",
+            { name: "maria rodriguez", family: "Rodriguez" },
             "luis rodriguez jr",
             "ana rodriguez",
             "carlos rodriguez",
@@ -219,21 +219,40 @@
         }
 
         let foundTable = null;
+        let foundFamily = null;
+        let foundName = null;
 
         tables.forEach((table) => {
-          if (table.guests.includes(guestName)) {
-            foundTable = table.number;
-          }
+          table.guests.forEach((guest) => {
+            if (typeof guest === "object") {
+              if (guest.name.toLowerCase() === guestName) {
+                foundTable = table.number;
+                foundFamily = guest.family;
+                foundName = null;
+              }
+            } else if (typeof guest === "string") {
+              if (guest.toLowerCase() === guestName) {
+                foundTable = table.number;
+                foundFamily = null;
+                foundName = guest;
+              }
+            }
+          });
         });
 
         if (foundTable) {
-          const capitalizedName = nameInput.value
-            .trim()
-            .replace(/\b\w/g, (l) => l.toUpperCase());
-
-          resultText.innerHTML = `¡Hola ${capitalizedName}! <br> Tu mesa es la número: <span class="text-5xl block mt-2">${foundTable}</span>`;
-          resultContainer.style.backgroundColor = "#d1fae5";
-          resultText.style.color = "#065f46";
+          if (foundFamily) {
+            resultText.innerHTML = `¡Hola familia ${foundFamily}! <br> Su mesa es la número: <span class="text-5xl block mt-2">${foundTable}</span>`;
+            resultContainer.style.backgroundColor = "#d1fae5";
+            resultText.style.color = "#065f46";
+          } else if (foundName) {
+            const capitalizedName = foundName
+              .trim()
+              .replace(/\b\w/g, (l) => l.toUpperCase());
+            resultText.innerHTML = `¡Hola ${capitalizedName}! <br> Tu mesa es la número: <span class="text-5xl block mt-2">${foundTable}</span>`;
+            resultContainer.style.backgroundColor = "#d1fae5";
+            resultText.style.color = "#065f46";
+          }
         } else {
           resultText.textContent =
             "Nombre no encontrado. Por favor, consulta con nuestro personal de apoyo.";
