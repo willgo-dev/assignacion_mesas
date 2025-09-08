@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bienvenida - Mis 15 Años Marcela Sayago</title>
+    <title>Bienvenidos - Mis 15 Años Marcela Sayago</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -98,7 +98,7 @@
         {
           number: 2,
           guests: [
-            "matias munoz",
+            { name: "matias muñoz", family: "Ugas, Matias Osito dormilon no te vayas a dormir, Gracias" },
             "johana rojas",
             { name: "valentina ugas", family: "Ugas" },
             { name: "julian ugas", family: "Ugas" },
@@ -106,7 +106,7 @@
             { name: "valeria ugas", family: "Barrios" },
             { name: "alana santander", family: "Barrios" },
             { name: "omar barrios", family: "Barrios" },
-            "jackeline torres",
+            { name: "jackeline", family: "Torres, se le agradece no limpiarse el papo con el mantel. Gracias" },
             "peyo sayago",
           ],
         },
@@ -120,7 +120,7 @@
             { name: "marisol garcia", family: "Abreu" },
             { name: "juan abreu", family: "Abreu" },
             { name: "gabriel abreu", family: "Abreu" },
-            "juan carlos bravo",
+            { name: "juan carlos bravo", family: "Bravo, se le gradece no quedar mudo ni desarmar a la gente, Gracias" },
             "tahony solorzano",
             "eduardo petit",
           ],
@@ -252,7 +252,7 @@
           }
         } else {
           resultText.textContent =
-            "Nombre no encontrado. Por favor, consulta con nuestro personal de apoyo.";
+            "Nombre no encontrado. Por favor, ingrese su nombre como en el formulario de la invitacion o consulta con nuestro personal de apoyo.";
           resultContainer.style.backgroundColor = "#fee2e2";
           resultText.style.color = "#991b1b";
         }
