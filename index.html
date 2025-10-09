@@ -15,16 +15,37 @@
       href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive:wght@400..700&family=Lato:wght@300;400;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
     <style>
       body {
         font-family: "Lato", sans-serif;
         background-color: #fff0f5; /* Rosa lavanda muy claro (crema) */
         color: #8b575c; /* Tono rosa oscuro para texto */
+        background: linear-gradient(
+          135deg,
+          #fff0f5 0%,
+          #e6e6fa 100%
+        ); /* Gradiente de rosa a lavanda */
       }
       h1,
       h2 {
         font-family: "Edu NSW ACT Hand Cursive", cursive;
+      }
+      /* Dentro de tu etiqueta <style> */
+      .text-gold {
+        color: #d4af37; /* Tono dorado */
+      }
+      .border-gold {
+        border-color: #d4af37;
+      }
+      .bg-gold {
+        background-color: #d4af37;
       }
       .bg-cream-light {
         background-color: #fff0f5;
@@ -49,7 +70,7 @@
   </head>
   <body class="bg-cream-light flex items-center justify-center min-h-screen">
     <div
-      class="w-full max-w-md mx-auto p-8 bg-white/70 rounded-2xl shadow-xl text-center"
+      class="w-full max-w-md mx-auto p-8 bg-white/80 rounded-2xl shadow-2xl text-center backdrop-blur-sm border border-white/20 animate__animated animate__zoomIn"
     >
       <!-- Título -->
       <h1 class="text-6xl font-bold text-accent">Bienvenidos</h1>
@@ -65,9 +86,30 @@
         />
         <button
           id="search-button"
-          class="w-full mt-4 px-4 py-3 bg-pink-500 text-white text-lg font-bold rounded-lg hover:bg-pink-600 transition-transform transform hover:scale-105"
+          class="w-full mt-4 px-4 py-3 bg-pink-500 text-white text-lg font-bold rounded-lg hover:bg-pink-600 transition-all transform hover:scale-105 flex items-center justify-center"
         >
-          Buscar Mesa
+          <span id="button-text">Buscar Mesa</span>
+          <svg
+            id="loading-spinner"
+            class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
         </button>
       </div>
 
@@ -98,7 +140,11 @@
         {
           number: 2,
           guests: [
-            { name: "matias muñoz", family: "Ugas, Matias Osito dormilon no te vayas a dormir, Gracias" },
+            {
+              name: "matias muñoz",
+              family:
+                "Ugas, Matias Osito dormilon no te vayas a dormir, Gracias",
+            },
             "johana rojas",
             { name: "valentina ugas", family: "Ugas" },
             { name: "julian ugas", family: "Ugas" },
@@ -106,7 +152,10 @@
             { name: "valeria ugas", family: "Barrios" },
             { name: "alana santander", family: "Barrios" },
             { name: "omar barrios", family: "Barrios" },
-            { name: "jackeline torres", family: "Torres, no limpiarse el papo con el mantel. Gracias" },
+            {
+              name: "jackeline torres",
+              family: "Torres, no limpiarse el papo con el mantel. Gracias",
+            },
             "Mime",
           ],
         },
@@ -119,7 +168,11 @@
             { name: "eduardo fuenmayor", family: "Fuenmayor" },
             { name: "marisol garcia", family: "Abreu" },
             { name: "juan abreu", family: "Abreu" },
-            { name: "juan carlos bravo", family: "Bravo, se le gradece no quedar mudo ni desarmar a la gente, Gracias" },
+            {
+              name: "juan carlos bravo",
+              family:
+                "Bravo, se le gradece no quedar mudo ni desarmar a la gente, Gracias",
+            },
             "tahonyth solorzano",
             "eduardo petit",
           ],
@@ -142,7 +195,7 @@
             "maitena ferreyra",
             "adrian peralta",
             "alegra",
-            "sebastian fong"
+            "sebastian fong",
           ],
         },
         {
@@ -157,7 +210,7 @@
             "viviana morales",
             "antonieta morales",
             "mario ramos",
-            "franco ferreyra"
+            "franco ferreyra",
           ],
         },
         {
@@ -185,7 +238,10 @@
             "angelica velasquez",
             "noe gonzalez",
             "maite rivera",
-            { name: "lenin bermudez", family: "TAMANACO, hoy no hay vuelta rinquin, Gracias" },
+            {
+              name: "lenin bermudez",
+              family: "TAMANACO, hoy no hay vuelta rinquin, Gracias",
+            },
             "heidy salazar",
           ],
         },
@@ -201,7 +257,7 @@
             "fernando gimenez",
             "gabriela rivero",
             "waxin fong",
-            "monica sanchez"
+            "monica sanchez",
           ],
         },
         // Puedes seguir agregando mesas con el mismo formato
@@ -215,6 +271,11 @@
 
       const findTable = () => {
         const guestName = nameInput.value.trim().toLowerCase();
+        const buttonText = document.getElementById("button-text");
+        const loadingSpinner = document.getElementById("loading-spinner");
+
+        // Ocultar resultados anteriores
+        resultContainer.classList.remove("animate__tada", "animate__shakeX");
 
         if (guestName === "") {
           resultText.textContent = "Por favor, ingresa un nombre.";
@@ -224,51 +285,82 @@
           return;
         }
 
-        let foundTable = null;
-        let foundFamily = null;
-        let foundName = null;
+        // --- Inicia el estado de carga ---
+        searchButton.disabled = true;
+        buttonText.textContent = "Buscando...";
+        loadingSpinner.classList.remove("hidden");
 
-        tables.forEach((table) => {
-          table.guests.forEach((guest) => {
-            if (typeof guest === "object") {
-              if (guest.name.toLowerCase() === guestName) {
-                foundTable = table.number;
-                foundFamily = guest.family;
-                foundName = null;
+        setTimeout(() => {
+          let foundTable = null;
+          let foundFamily = null;
+          let foundName = null;
+
+          tables.forEach((table) => {
+            table.guests.forEach((guest) => {
+              if (typeof guest === "object") {
+                if (guest.name.toLowerCase() === guestName) {
+                  foundTable = table.number;
+                  foundFamily = guest.family;
+                  foundName = null;
+                }
+              } else if (typeof guest === "string") {
+                if (guest.toLowerCase() === guestName) {
+                  foundTable = table.number;
+                  foundFamily = null;
+                  foundName = guest;
+                }
               }
-            } else if (typeof guest === "string") {
-              if (guest.toLowerCase() === guestName) {
-                foundTable = table.number;
-                foundFamily = null;
-                foundName = guest;
-              }
-            }
+            });
           });
-        });
 
-        if (foundTable) {
-          if (foundFamily) {
-            resultText.innerHTML = `¡Hola familia ${foundFamily}! <br> Su mesa es la número: <span class="text-5xl block mt-2">${foundTable}</span>`;
-            resultContainer.style.backgroundColor = "#d1fae5";
-            resultText.style.color = "#065f46";
-          } else if (foundName) {
-            const capitalizedName = foundName
-              .trim()
-              .replace(/\b\w/g, (l) => l.toUpperCase());
-            resultText.innerHTML = `¡Hola ${capitalizedName}! <br> Tu mesa es la número: <span class="text-5xl block mt-2">${foundTable}</span>`;
-            resultContainer.style.backgroundColor = "#d1fae5";
-            resultText.style.color = "#065f46";
+          if (foundTable) {
+            if (foundFamily) {
+              resultText.innerHTML = `¡Hola familia ${foundFamily}! <br> Su mesa es la número: <span class="text-5xl block mt-2">${foundTable}</span>`;
+              resultContainer.style.backgroundColor = "#d1fae5";
+              resultText.style.color = "#065f46";
+              resultContainer.classList.add(
+                "animate__animated",
+                "animate__tada"
+              ); // Animación de celebración
+            } else if (foundName) {
+              const capitalizedName = foundName
+                .trim()
+                .replace(/\b\w/g, (l) => l.toUpperCase());
+              resultText.innerHTML = `¡Hola ${capitalizedName}! <br> Tu mesa es la número: <span class="text-5xl block mt-2">${foundTable}</span>`;
+              resultContainer.style.backgroundColor = "#d1fae5";
+              resultText.style.color = "#065f46";
+              resultContainer.classList.add(
+                "animate__animated",
+                "animate__tada"
+              ); // Animación de celebración
+            }
+            // --- ¡AQUÍ LANZAMOS EL CONFETI! ---
+            confetti({
+              particleCount: 150, // Más partículas
+              spread: 180, // Angulo más amplio
+              origin: { y: 0.6 }, // Empieza desde un poco más abajo de la mitad
+            });
+          } else {
+            resultText.textContent =
+              "Nombre no encontrado. Por favor, ingrese su nombre como en el formulario de la invitacion o consulta con nuestro personal de apoyo.";
+            resultContainer.style.backgroundColor = "#fee2e2";
+            resultText.style.color = "#991b1b";
+            resultContainer.classList.add(
+              "animate__animated",
+              "animate__shakeX"
+            ); // Animación de error
           }
-        } else {
-          resultText.textContent =
-            "Nombre no encontrado. Por favor, ingrese su nombre como en el formulario de la invitacion o consulta con nuestro personal de apoyo.";
-          resultContainer.style.backgroundColor = "#fee2e2";
-          resultText.style.color = "#991b1b";
-        }
 
-        resultContainer.classList.add("visible");
+          resultContainer.classList.add("visible");
+
+          // --- Restaura el botón ---
+          searchButton.disabled = false;
+          buttonText.textContent = "Buscar Mesa";
+          loadingSpinner.classList.add("hidden");
+        }, 1500); // Espera 1.5 segundos
       };
 
+      // Conectan la función 'findTable' a los eventos del usuario.
       searchButton.addEventListener("click", findTable);
       nameInput.addEventListener("keyup", (event) => {
         if (event.key === "Enter") {
