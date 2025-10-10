@@ -66,6 +66,14 @@
         transform: translateY(0);
         max-height: 200px;
       }
+
+      /* Reducir ligeramente texto para invitados específicos (ej. Juan Carlos Bravo) */
+      .small-guest-text {
+        font-size: 1rem !important;
+      }
+      .small-guest-number {
+        font-size: 2rem !important;
+      }
     </style>
   </head>
   <body class="bg-cream-light flex items-center justify-center min-h-screen">
@@ -171,7 +179,7 @@
             {
               name: "juan carlos bravo",
               family:
-                "Bravo, se le gradece no quedar mudo ni desarmar a la gente, Gracias",
+                "Bravo, por favor no quedar mudo ni desarmar a la gente, Gracias",
             },
             "tahonyth solorzano",
             "eduardo petit",
@@ -255,7 +263,7 @@
             "gabriela rivero",
             "waxin fong",
             "monica sanchez",
-            "brianna fong"
+            "brianna fong",
           ],
         },
         // Se pueden seguir agregando mesas con el mismo formato
@@ -292,6 +300,7 @@
           let foundTable = null;
           let foundFamily = null;
           let foundName = null;
+          let foundGuestName = null; // guarda el nombre exacto encontrado
 
           tables.forEach((table) => {
             table.guests.forEach((guest) => {
@@ -299,6 +308,7 @@
                 if (guest.name.toLowerCase() === guestName) {
                   foundTable = table.number;
                   foundFamily = guest.family;
+                  foundGuestName = guest.name;
                   foundName = null;
                 }
               } else if (typeof guest === "string") {
@@ -306,14 +316,27 @@
                   foundTable = table.number;
                   foundFamily = null;
                   foundName = guest;
+                  foundGuestName = guest;
                 }
               }
             });
           });
 
+          // Quitar clase especial anterior
+          resultText.classList.remove("small-guest-text");
+          // Determinar si es el invitado especial (Juan Carlos Bravo)
+          const isSmallGuest =
+            foundGuestName &&
+            foundGuestName.toLowerCase() === "juan carlos bravo";
+
           if (foundTable) {
             if (foundFamily) {
-              resultText.innerHTML = `¡Hola familia ${foundFamily}! <br> Su mesa es la número: <span class="text-5xl block mt-2">${foundTable}</span>`;
+              if (isSmallGuest) {
+                resultText.classList.add("small-guest-text");
+                resultText.innerHTML = `¡Hola familia ${foundFamily}! <br> Su mesa es la número: <span class="small-guest-number block mt-2">${foundTable}</span>`;
+              } else {
+                resultText.innerHTML = `¡Hola familia ${foundFamily}! <br> Su mesa es la número: <span class="text-5xl block mt-2">${foundTable}</span>`;
+              }
               resultContainer.style.backgroundColor = "#d1fae5";
               resultText.style.color = "#065f46";
               resultContainer.classList.add(
@@ -324,7 +347,12 @@
               const capitalizedName = foundName
                 .trim()
                 .replace(/\b\w/g, (l) => l.toUpperCase());
-              resultText.innerHTML = `¡Hola ${capitalizedName}! <br> Tu mesa es la número: <span class="text-5xl block mt-2">${foundTable}</span>`;
+              if (isSmallGuest) {
+                resultText.classList.add("small-guest-text");
+                resultText.innerHTML = `¡Hola ${capitalizedName}! <br> Tu mesa es la número: <span class="small-guest-number block mt-2">${foundTable}</span>`;
+              } else {
+                resultText.innerHTML = `¡Hola ${capitalizedName}! <br> Tu mesa es la número: <span class="text-5xl block mt-2">${foundTable}</span>`;
+              }
               resultContainer.style.backgroundColor = "#d1fae5";
               resultText.style.color = "#065f46";
               resultContainer.classList.add(
